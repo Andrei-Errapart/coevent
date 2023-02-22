@@ -1,5 +1,6 @@
 #include "coevent/write.h"
 
+#include <cstring>
 #include <stdexcept>
 #include <cerrno>
 #include <sstream>

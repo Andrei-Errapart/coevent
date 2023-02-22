@@ -4,7 +4,7 @@ namespace coevent {
 //--------------------------------------------------------------------------------------------------
 // constructor
 //--------------------------------------------------------------------------------------------------
-detached_task_handle::detached_task_handle(std::experimental::coroutine_handle<> coroutine) noexcept
+detached_task_handle::detached_task_handle(std::coroutine_handle<> coroutine) noexcept
   : coroutine_{coroutine}
 {
 }

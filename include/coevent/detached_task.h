@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include <experimental/coroutine>
+#include <coroutine>
 
 namespace coevent {
 class detached_task_promise;
@@ -30,7 +30,7 @@ class detached_task_promise {
     bool await_ready() const noexcept { return false; }
 
     void await_suspend(
-        std::experimental::coroutine_handle<> coroutine) noexcept;
+        std::coroutine_handle<> coroutine) noexcept;
 
    private:
     std::shared_ptr<detached_task_handle> handle_;
@@ -40,7 +40,7 @@ class detached_task_promise {
 
   detached_task get_return_object();
 
-  std::experimental::suspend_never initial_suspend() noexcept { return {}; }
+  std::suspend_never initial_suspend() noexcept { return {}; }
 
   final_awaiter final_suspend() noexcept;
 

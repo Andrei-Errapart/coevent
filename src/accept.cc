@@ -1,5 +1,6 @@
 #include "coevent/accept.h"
 
+#include <cstring>
 #include <stdexcept>
 #include <cerrno>
 #include <sstream>

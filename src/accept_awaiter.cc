@@ -43,7 +43,7 @@ coevent::socket accept_awaiter::await_resume() {
 //--------------------------------------------------------------------------------------------------
 // await_suspend
 //--------------------------------------------------------------------------------------------------
-void accept_awaiter::await_suspend(std::experimental::coroutine_handle<> coroutine) {
+void accept_awaiter::await_suspend(std::coroutine_handle<> coroutine) {
   coroutine_ = coroutine;
   event_ = coevent::event{
       listener_socket_.io_context(), listener_socket_.file_descriptor(),

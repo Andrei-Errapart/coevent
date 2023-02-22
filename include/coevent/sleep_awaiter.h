@@ -1,7 +1,8 @@
 #pragma once
 
 #include <chrono>
-#include <experimental/coroutine>
+#include <coroutine>
+#include <exception>
 
 #include "coevent/event.h"
 #include "coevent/io_context.h"
@@ -22,12 +23,12 @@ class sleep_awaiter {
 
    bool await_ready() const noexcept { return false; }
 
-   void await_suspend(std::experimental::coroutine_handle<> coroutine);
+   void await_suspend(std::coroutine_handle<> coroutine);
  private:
   coevent::io_context& io_context_;
   std::chrono::microseconds duration_;
   coevent::event event_;
-  std::experimental::coroutine_handle<> coroutine_{nullptr};
+  std::coroutine_handle<> coroutine_{nullptr};
   std::exception_ptr exception_;
 
   static void on_timeout(int file_descriptor, short what, void* context) noexcept;

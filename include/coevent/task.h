@@ -1,8 +1,10 @@
 #pragma once
 
-#include <experimental/coroutine>
+#include <coroutine>
 #include <exception>
 #include <variant>
+
+#include <assert.h>
 
 namespace coevent {
 template <class T>
@@ -15,7 +17,7 @@ class task {
 
    class awaiter_base {
      public:
-        explicit awaiter_base(std::experimental::coroutine_handle<promise_type> coroutine)
+        explicit awaiter_base(std::coroutine_handle<promise_type> coroutine)
           : coroutine_{coroutine}
         {}
 
@@ -25,14 +27,14 @@ class task {
           return coroutine_.done();
         }
 
-        std::experimental::coroutine_handle<> await_suspend(
-            std::experimental::coroutine_handle<> awaiting_coroutine) const noexcept {
+        std::coroutine_handle<> await_suspend(
+            std::coroutine_handle<> awaiting_coroutine) const noexcept {
           coroutine_.promise().set_continuation(awaiting_coroutine);
           return coroutine_;
         }
 
      protected:
-       std::experimental::coroutine_handle<promise_type> coroutine_;
+       std::coroutine_handle<promise_type> coroutine_;
    };
 
    class lvalue_awaiter final : public awaiter_base {
@@ -57,7 +59,7 @@ class task {
 
    task() noexcept = default;
 
-   task(std::experimental::coroutine_handle<promise_type> coroutine) noexcept
+   task(std::coroutine_handle<promise_type> coroutine) noexcept
      : coroutine_{coroutine}
    {}
 
@@ -94,7 +96,7 @@ class task {
    }
 
  private:
-   std::experimental::coroutine_handle<promise_type> coroutine_;
+   std::coroutine_handle<promise_type> coroutine_;
 };
 
 template <>
@@ -104,7 +106,7 @@ class task<void> {
 
    class awaiter {
      public:
-        explicit awaiter(std::experimental::coroutine_handle<promise_type> coroutine)
+        explicit awaiter(std::coroutine_handle<promise_type> coroutine)
           : coroutine_{coroutine}
         {}
 
@@ -114,18 +116,18 @@ class task<void> {
           return coroutine_.done();
         }
 
-        std::experimental::coroutine_handle<> await_suspend(
-            std::experimental::coroutine_handle<> awaiting_coroutine) const noexcept;
+        std::coroutine_handle<> await_suspend(
+            std::coroutine_handle<> awaiting_coroutine) const noexcept;
 
        void await_resume() const;
 
      protected:
-       std::experimental::coroutine_handle<promise_type> coroutine_;
+       std::coroutine_handle<promise_type> coroutine_;
    };
 
    task() noexcept = default;
 
-   task(std::experimental::coroutine_handle<promise_type> coroutine) noexcept
+   task(std::coroutine_handle<promise_type> coroutine) noexcept
      : coroutine_{coroutine}
    {}
 
@@ -158,7 +160,7 @@ class task<void> {
    }
 
  private:
-   std::experimental::coroutine_handle<promise_type> coroutine_;
+   std::coroutine_handle<promise_type> coroutine_;
 };
 
 template <class T>
@@ -172,13 +174,13 @@ class task_promise {
      void await_resume() const noexcept {}
 
      template <class Promise>
-     std::experimental::coroutine_handle<> await_suspend(
-         std::experimental::coroutine_handle<Promise> coroutine) noexcept {
+     std::coroutine_handle<> await_suspend(
+         std::coroutine_handle<Promise> coroutine) noexcept {
        return coroutine.promise().continuation_;
      }
    };
 
-   void set_continuation(std::experimental::coroutine_handle<> coroutine) noexcept {
+   void set_continuation(std::coroutine_handle<> coroutine) noexcept {
      continuation_ = coroutine;
    }
 
@@ -192,10 +194,10 @@ class task_promise {
 
    // Promise
    task<T> get_return_object() {
-     return task<T>{std::experimental::coroutine_handle<task_promise>::from_promise(*this)};
+     return task<T>{std::coroutine_handle<task_promise>::from_promise(*this)};
    }
 
-   std::experimental::suspend_always initial_suspend() noexcept {
+   std::suspend_always initial_suspend() noexcept {
      return {};
    }
 
@@ -213,7 +215,7 @@ class task_promise {
    }
 
   private:
-   std::experimental::coroutine_handle<> continuation_;
+   std::coroutine_handle<> continuation_;
    std::variant<T, std::exception_ptr> result_;
 };
 
@@ -228,13 +230,13 @@ class task_promise<void> {
      void await_resume() const noexcept {}
 
      template <class Promise>
-     std::experimental::coroutine_handle<> await_suspend(
-         std::experimental::coroutine_handle<Promise> coroutine) noexcept {
+     std::coroutine_handle<> await_suspend(
+         std::coroutine_handle<Promise> coroutine) noexcept {
        return coroutine.promise().continuation_;
      }
    };
 
-   void set_continuation(std::experimental::coroutine_handle<> coroutine) noexcept {
+   void set_continuation(std::coroutine_handle<> coroutine) noexcept {
      continuation_ = coroutine;
    }
 
@@ -246,10 +248,10 @@ class task_promise<void> {
 
    // Promise
    task<void> get_return_object() {
-     return task<void>{std::experimental::coroutine_handle<task_promise>::from_promise(*this)};
+     return task<void>{std::coroutine_handle<task_promise>::from_promise(*this)};
    }
 
-   std::experimental::suspend_always initial_suspend() noexcept {
+   std::suspend_always initial_suspend() noexcept {
      return {};
    }
 
@@ -264,7 +266,7 @@ class task_promise<void> {
    }
 
   private:
-   std::experimental::coroutine_handle<> continuation_;
+   std::coroutine_handle<> continuation_;
    std::exception_ptr exception_;
 };
 } // namespace coevent

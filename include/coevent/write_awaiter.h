@@ -1,7 +1,7 @@
 #pragma once
 
 #include <span>
-#include <experimental/coroutine>
+#include <coroutine>
 #include <exception>
 
 #include "coevent/event.h"
@@ -16,13 +16,13 @@ class write_awaiter {
 
    bool await_ready() const noexcept { return num_written_ == data_.size(); }
 
-   void await_suspend(std::experimental::coroutine_handle<> coroutine);
+   void await_suspend(std::coroutine_handle<> coroutine);
  private:
   coevent::socket& socket_;
   coevent::event event_;
   std::span<const char> data_;
   size_t num_written_;
-  std::experimental::coroutine_handle<> coroutine_{nullptr};
+  std::coroutine_handle<> coroutine_{nullptr};
   std::exception_ptr exception_;
 
   static void on_writable(int file_descriptor, short what, void* context) noexcept;

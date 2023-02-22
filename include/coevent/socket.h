@@ -19,7 +19,7 @@ class socket {
    socket& operator=(const socket&) = delete;
    socket& operator=(socket&& other) noexcept;
 
-   io_context& io_context() noexcept {
+   ::coevent::io_context& io_context() noexcept {
     return io_context_;
    }
 

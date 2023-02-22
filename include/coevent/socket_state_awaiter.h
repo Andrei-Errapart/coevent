@@ -1,6 +1,6 @@
 #pragma once
 
-#include <experimental/coroutine>
+#include <coroutine>
 
 #include "coevent/event.h"
 #include "coevent/socket.h"
@@ -14,11 +14,11 @@ class [[nodiscard]] socket_state_awaiter {
 
    bool await_ready() const noexcept { return false; }
 
-   void await_suspend(std::experimental::coroutine_handle<> coroutine);
+   void await_suspend(std::coroutine_handle<> coroutine);
  private:
   coevent::socket& socket_;
   coevent::event event_;
-  std::experimental::coroutine_handle<> coroutine_{nullptr};
+  std::coroutine_handle<> coroutine_{nullptr};
   short what_;
   short state_what_;
 

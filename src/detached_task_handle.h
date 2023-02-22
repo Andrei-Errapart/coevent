@@ -1,16 +1,16 @@
 #pragma once
 
 #include <atomic>
-#include <experimental/coroutine>
+#include <coroutine>
 
 namespace coevent {
 class detached_task_handle {
  public:
-   explicit detached_task_handle(std::experimental::coroutine_handle<> coroutine) noexcept;
+   explicit detached_task_handle(std::coroutine_handle<> coroutine) noexcept;
 
    bool finish() noexcept;
  private:
    std::atomic<bool> finished_{false};
-   std::experimental::coroutine_handle<void> coroutine_;
+   std::coroutine_handle<void> coroutine_;
 };
 } // namespace coevent

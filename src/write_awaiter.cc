@@ -29,7 +29,7 @@ void write_awaiter::await_resume() const {
 //--------------------------------------------------------------------------------------------------
 // await_suspend
 //--------------------------------------------------------------------------------------------------
-void write_awaiter::await_suspend(std::experimental::coroutine_handle<> coroutine) {
+void write_awaiter::await_suspend(std::coroutine_handle<> coroutine) {
   coroutine_ = coroutine;
   event_ =
       coevent::event{socket_.io_context(), socket_.file_descriptor(),

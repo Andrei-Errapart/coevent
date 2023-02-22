@@ -17,7 +17,7 @@ short socket_state_awaiter::await_resume() const noexcept {
 //--------------------------------------------------------------------------------------------------
 // await_suspend
 //--------------------------------------------------------------------------------------------------
-void socket_state_awaiter::await_suspend(std::experimental::coroutine_handle<> coroutine) {
+void socket_state_awaiter::await_suspend(std::coroutine_handle<> coroutine) {
   coroutine_ = coroutine;
   event_ = coevent::event{socket_.io_context(), socket_.file_descriptor(),
                           what_, &socket_state_awaiter::on_state_change,

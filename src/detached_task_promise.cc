@@ -10,7 +10,7 @@ namespace coevent {
 //--------------------------------------------------------------------------------------------------
 detached_task_promise::detached_task_promise()
     : handle_{std::make_shared<detached_task_handle>(
-          std::experimental::coroutine_handle<
+          std::coroutine_handle<
               detached_task_promise>::from_promise(*this))} {}
 
 detached_task_promise::final_awaiter::final_awaiter(std::shared_ptr<detached_task_handle> handle) noexcept
@@ -22,7 +22,7 @@ detached_task_promise::final_awaiter::final_awaiter(std::shared_ptr<detached_tas
 // await_suspend
 //--------------------------------------------------------------------------------------------------
 void detached_task_promise::final_awaiter::await_suspend(
-        std::experimental::coroutine_handle<> /*coroutine*/) noexcept {
+        std::coroutine_handle<> /*coroutine*/) noexcept {
   handle_->finish();
 }
 

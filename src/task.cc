@@ -4,8 +4,8 @@ namespace coevent {
 //--------------------------------------------------------------------------------------------------
 // await_suspend
 //--------------------------------------------------------------------------------------------------
-std::experimental::coroutine_handle<> task<void>::awaiter::await_suspend(
-    std::experimental::coroutine_handle<> awaiting_coroutine) const noexcept {
+std::coroutine_handle<> task<void>::awaiter::await_suspend(
+    std::coroutine_handle<> awaiting_coroutine) const noexcept {
   coroutine_.promise().set_continuation(awaiting_coroutine);
   return coroutine_;
 }
